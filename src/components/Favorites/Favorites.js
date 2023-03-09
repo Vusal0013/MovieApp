@@ -1,21 +1,24 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import "./Favorites.css";
 
 const Favorites = () => {
-  const [state, setState] = useState({
-    title: "Новый список",
-    movies: [{ imdbID: "tt0068646", title: "The Godfather", year: 1972 }],
-  });
-
+  const [listName, setListName] = useState("");
+  const movies = useSelector((store) => store.favoriteReducer.favorite);
   return (
     <div className="favorites">
-      <input value="Новый список" className="favorites__name" />
+      <input
+        placeholder="List Name"
+        onChange={(e) => setListName(e.target.value)}
+        value={listName}
+        className="favorites__name"
+      />
       <ul className="favorites__list">
-        {state.movies.map((item) => {
+        {movies.map((item) => {
           return (
-            <li key={item.id}>
-              {item.title} ({item.year})
+            <li key={item.imdbID}>
+              {item.Title} ({item.Year})
             </li>
           );
         })}

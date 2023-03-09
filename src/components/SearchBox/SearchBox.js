@@ -1,14 +1,27 @@
 import React, { Component } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import "./SearchBox.css";
 
 const SearchBox = () => {
   const [searchLine, setSearchLine] = useState("");
+  const dispatch = useDispatch();
   const searchLineChangeHandler = (e) => {
-    this.setState({ searchLine: e.target.value });
+    setSearchLine(e.target.value);
   };
+
   const searchBoxSubmitHandler = (e) => {
     e.preventDefault();
+    fetch(`http://www.omdbapi.com/?s=${searchLine}&apikey=747c0fa3`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        dispatch({
+          type: "FETCH_DATA",
+          payload: data.Search,
+        });
+      });
+    setSearchLine("");
   };
 
   return (
